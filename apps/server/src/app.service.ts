@@ -22,12 +22,22 @@ export class AppService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    const user = this.em.create(User, {
+    const duplicateUser = await this.em.findOne(User, {
+      username: createUserDto.username,
+    });
+
+    if (duplicateUser) {
+      throw new UnauthorizedException('Please use another username!');
+    }
+
+    const userCreated = this.em.create(User, {
       username: createUserDto.username,
       password: await bcrypt.hash(createUserDto.password, 12),
     });
-    await this.em.persistAndFlush(user);
-    return user;
+
+    await this.em.persistAndFlush(userCreated);
+
+    return userCreated;
   }
 
   async login(loginDto: CreateUserDto) {

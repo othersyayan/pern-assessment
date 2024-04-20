@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cd ./apps/server && yarn start:dev"
+    "dev:server": "yarn workspace server start:dev",
+    "dev:client": "yarn workspace client dev"
   },
   "devDependencies": {
     "eslint": "^8.19.0",
